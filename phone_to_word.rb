@@ -53,10 +53,18 @@ class PhoneToWord
   end
 
   def to_words
-    puts phone_number_combinations.inspect
+    words = []
+    phone_number_combinations.each do |combination|
+      part_words = []
+      combination.each do |part_number|
+        word = @word_hash.key(part_number)
+        part_words << word.downcase if word
+      end
+      words << part_words if part_words.size == combination.size
+    end
+    words
   end
 end
 
 phone_to_word = PhoneToWord.new
-
 phone_to_word.to_words
