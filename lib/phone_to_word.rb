@@ -52,7 +52,7 @@ class PhoneToWord
     # a valid phone is
     # - @max_phone_length digit
     # - without 0s and 1s
-    @phone_number = nil
+    @phone_number = options[:phone_number].to_s
     while !valid_phone?(@phone_number)
       puts "Please enter a valid 10 digit phone number without binary numbers(0's and 1's):"
       @phone_number = gets.chomp

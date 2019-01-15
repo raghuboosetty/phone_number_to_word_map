@@ -25,5 +25,11 @@ $ 6686787825
 # Possible Words:
 # [["motortruck"], ["noun", "struck"], ["onto", "struck"], ["motor", "truck"], ["motor", "usual"], ["nouns", "truck"], ["nouns", "usual"]]
 # Time to execute: 0.31ms
+```
 
+## Unit Tests
+
+A mini test suite is added under `phone_number_to_word_map/spec` dir. You can run the test suite from `phone_number_to_word_map` dir by running
+```
+$ bin/run_specs
 ```
