@@ -41,3 +41,26 @@ $ bin/run_specs
 4. Once the correct input is given, it splits the given number into `n` sets of a 2D array. Based on the conditions i.e min. length to be 3 and max. size of each set to be 2.
 5. Based on the combinations obtained, it iterates over them and fetches the word(s) from the JSON file, which forms a new 2D array, basically it's just mapping of phone to word(s)
 6. These words are then combined within the sets to form final words.
+
+## Deep Detail
+The output of program is slightly different form the output obtained but I believe solution is correct. Please update for any issues involved:
+1. Single words are wrapped in array in this program output but problem example output is showing as string
+2. Some combinations are missing in given example. E.g: ['motor', 'truck'], ["cat", "amounts"], it can be assumed that full word 'motortruck' and 'catamounts' are used instead. If we consider that case then, ["acta", "mounts"] and ["act", "amounts"] shouldn't exist as they both are same when combined. Similarly ["noun", "struck"] and ["nouns", "truck"] shouldn't be there
+3. The default set size if set of 3 then there will be more combinations.
+<br><br>
+
+Max. effort has been put to make the code dynamic also taking performance into account. So, most of the inputs given in problem are converted to params to new method. Thus extending the scope of the application.
+<br><br>
+Alter `bin/run` to change the input params for the `PhoneToWord#new`
+<br>
+e.g: 
+* max_word_sets: integer(default: 2)<br>
+  The number of sets a phone number needs to be broken into. The problem shows the set size to be 2.
+* max_phone_length: integer(default: 10)<br> 
+  The phone number length is 10 in the given problem, but I've made the scope to be dynamic where user can given any length of inputs
+* min_word_length: integer (default: 3)<br>
+  Min. number of words that each set need to have. Given input length is 3 but it can be changed to any number that user wants
+* refresh_dictonary_json: boolean (default: false)<br>
+  To refresh the JSON file whenever a dictonary is upated. This is one time operation. Setting the flag to true will update the JSON or if the file is missing then it will create a new one
+* phone_number: integer/string (default: 0)<br>
+  It can be given as an input param or can be given via console. When no input is given or when a wrong input is given the console will prompt for input.
