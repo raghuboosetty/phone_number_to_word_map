@@ -33,3 +33,11 @@ A mini test suite is added under `phone_number_to_word_map/spec` dir. You can ru
 ```
 $ bin/run_specs
 ```
+
+## Logic
+1. Parse the dictonary at once and write the data to a JSON file. Basically write once and read many. This helps in optimizing the performance of the application. It can also be done using DB with indexing and(or) searching libraries like elasticsearch as a next level of performance
+2. Read the file at the time of initalization
+3. Take the phone number as input from console, until the correct input is given by user. If user enters a number which is greater than or less than 10 or if 10 digit includes 0s and 1s then it will prompt for input again.
+4. Once the correct input is given, it splits the given number into `n` sets of a 2D array. Based on the conditions i.e min. length to be 3 and max. size of each set to be 2.
+5. Based on the combinations obtained, it iterates over them and fetches the word(s) from the JSON file, which forms a new 2D array, basically it's just mapping of phone to word(s)
+6. These words are then combined within the sets to form final words.
