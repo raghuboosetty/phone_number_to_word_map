@@ -27,7 +27,7 @@ class PhoneToWord
       @word_hash = Hash.new { |h, k| h[k] = Array.new }
       puts 'Refreshing Dictonary...'
       File.read(@dictonary_file).split("\n").each do |word|
-        next if word.length > @max_phone_length
+        next if (word.length > @max_phone_length || word.length < @min_word_length)
         number = '' 
         word.split('').each do |letter|
           case letter.downcase
