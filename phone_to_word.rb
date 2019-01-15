@@ -6,7 +6,6 @@ class PhoneToWord
     @word_hash = Hash.new { |h, k| h[k] = Array.new }
     puts 'Initializing...'
     File.read("dictionary.txt").split("\n").each do |word|
-      # @word_hash[word] = ''
       number = '' 
       word.split('').each do |letter|
         case letter.downcase
@@ -21,11 +20,7 @@ class PhoneToWord
         end
       end
       @word_hash[number] << word.downcase
-      # puts @word_hash[number].size if @word_hash[number].size > 1
-      # word_hash[word] = word_hash[word].to_i
     end
-    # puts @word_hash.inspect
-    # puts @word_hash['66867']
 
     @phone_number = nil
     while !valid_phone?(@phone_number)
@@ -38,64 +33,49 @@ class PhoneToWord
     phone_number && phone_number.length == 10 && phone_number.match(/^[2-9]*$/)
   end
 
-  # def phone_number_combinations(phone_number = @phone_number)
-  #   combination = (phone_number.length < @min_word_length) ? [] : [[phone_number]]
-  #   max = [@max_phone_length, phone_number.length].min
-  #   (@min_word_length...max).inject(combination) do |combination, i|
-  #     phone_number_combinations(phone_number[i..-1]).inject(combination) do |combination, tail|
-  #       combination.push([phone_number[0...i]] + tail)
-  #     end
-  #   end
-  # end
-
-  def phone_number_combinations
-    combinations = [[@phone_number]]
-    10.times do |i|
-      next if i < 2 || @phone_number[i + 1..-1].length < 3
-      combinations <<  [@phone_number[0..i], @phone_number[i + 1..-1]]
+  def phone_number_combinations(phone_number = @phone_number)
+    combination = (phone_number.length < @min_word_length) ? [] : [[phone_number]]
+    max = [@max_phone_length, phone_number.length].min
+    (@min_word_length...max).inject(combination) do |combination, i|
+      phone_number_combinations(phone_number[i..-1]).inject(combination) do |combination, tail|
+        combination.push([phone_number[0...i]] + tail)
+      end
     end
-    combinations
+    combination
   end
 
+  # def phone_number_combinations
+  #   combinations = [[@phone_number]]
+  #   10.times do |i|
+  #     next if i < 2 || @phone_number[i + 1..-1].length < 3
+  #     combinations <<  [@phone_number[0..i], @phone_number[i + 1..-1]]
+  #   end
+  #   combinations
+  # end
+
   def to_words
-    words = []
+    word_sets = []
     phone_number_combinations.each do |combination|
       part_words = []
       combination.each do |part_number|
-        word = @word_hash[part_number]
-        part_words << word if !word.empty?
+        word_arr = @word_hash[part_number]
+        part_words << word_arr if !word_arr.empty?
       end
-      words << part_words if part_words.size == combination.size
+      word_sets << part_words if part_words.size == combination.size
     end
 
-    word_sets = []
-    words.each do |word_set|
-      if word_set.size == 2
-        word_set1, word_set2 = word_set
-        word_set1.each_with_index do |set1, set1_index|
-          word_set2.each_with_index do |set2, set2_index|
-            word_sets << [word_set1[set1_index], word_set2[set2_index]]
-          end
-        end
-      else
-        word_sets << word_set.flatten
-      end
+    words = []
+    word_sets.each do |word_set|
+      # next if word_set.size > 2
+      first_set, *rest_set = word_set
+      words += first_set.product(*rest_set)
     end
-    word_sets
+    words
   end
 
-  # def to_words
-  #   words = []
-  #   phone_number_combinations.each do |combination|
-  #     part_words = []
-  #     combination.each do |part_number|
-  #       word = @word_hash[part_number]
-  #       part_words << word.map(&:downcase) if word
-  #     end
-  #     words << part_words if part_words.size == combination.size
-  #   end
-  #   words
-  # end
+  def to_phone
+    
+  end
 end
 
 phone_to_word = PhoneToWord.new
