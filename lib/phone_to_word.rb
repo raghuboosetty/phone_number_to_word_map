@@ -1,4 +1,4 @@
-require 'yaml'
+require 'json'
 class PhoneToWord
   def initialize(options={})
 
@@ -16,16 +16,14 @@ class PhoneToWord
     @max_word_sets = options[:max_word_sets]
 
     # the dictonary holds many words and looping it every time will consume more time
-    # instead loop one and write to file(yml) and read it next time
+    # instead loop one and write to file(JSON) and read it next time
     # symbols are faster than loops
     # every time dictonary is updated the file can be refershed with :refresh_dictonary_hash attribute
-    if !!options[:refresh_dictonary_hash] || !File.file?('dictonary_hash.yml')
-      puts 'Refreshing Dictonary...'
+    if !!options[:refresh_dictonary_hash] || !File.file?('dictonary_hash.json')
       @word_hash = Hash.new { |h, k| h[k] = Array.new }
       init_word_hash!(@word_hash, @max_phone_length)
     else
-      puts 'Loading Dictonary...'
-      @word_hash = YAML.load(File.read("dictonary_hash.yml"))      
+      @word_hash = JSON.parse(File.read("dictonary_hash.json"))
     end
 
     # loop until a valid phone is given
@@ -98,6 +96,7 @@ private
   # - put the data to DB and index the column
   # - or use searching libraries like elasticsearch
   def init_word_hash!(word_hash, max_phone_length)
+    puts 'Refreshing Dictonary...'
     File.read("dictionary.txt").split("\n").each do |word|
       next if word.length > max_phone_length
       number = '' 
@@ -115,6 +114,6 @@ private
       end
       word_hash[number] << word.downcase
     end
-    File.open("dictonary_hash.yml", "w") { |file| file.write(word_hash.to_yaml) }
+    File.open("dictonary_hash.json", "w") { |file| file.write(word_hash.to_json) }
   end
 end
