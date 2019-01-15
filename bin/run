@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+require 'json'
+require_relative '../lib/phone_to_word'
+
+def run
+  begin
+    # options
+    # - max_word_sets: integer (default: nil)
+    # - max_phone_length: integer (default: 10)
+    # - min_word_length: integer (default: 3)
+    # - refresh_dictonary_hash: boolean (default: false)
+    phone_to_word = PhoneToWord.new(max_word_sets: 2)
+    puts
+    puts "Possible Words:"
+    puts phone_to_word.to_words.inspect
+  rescue StandardError => e
+    puts "Input Error - #{e}"
+  end
+end
+
+run

@@ -118,12 +118,3 @@ private
     File.open("dictonary_hash.yml", "w") { |file| file.write(word_hash.to_yaml) }
   end
 end
-
-
-# options
-# - max_word_sets: integer (default: nil)
-# - max_phone_length: integer (default: 10)
-# - min_word_length: integer (default: 3)
-# - refresh_dictonary_hash: boolean (default: false)
-phone_to_word = PhoneToWord.new(max_word_sets: 2)
-puts phone_to_word.to_words.inspect
