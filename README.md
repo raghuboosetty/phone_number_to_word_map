@@ -1,3 +1,5 @@
+The problem statement is here: `/docs/problem`. Please go through it.
+
 ## Setup
 
 First, install [Ruby](https://www.ruby-lang.org/en/documentation/installation/). 

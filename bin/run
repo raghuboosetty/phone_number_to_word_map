@@ -3,20 +3,20 @@ require 'benchmark'
 require_relative '../lib/phone_to_word'
 
 def run
-  begin
+  # begin
     # options
     # - max_word_sets: integer (default: nil)
     # - max_phone_length: integer (default: 10)
     # - min_word_length: integer (default: 3)
-    # - refresh_dictonary_hash: boolean (default: false)
-    phone_to_word = PhoneToWord.new(max_word_sets: 2)
+    # - refresh_dictonary_json: boolean (default: false)
+    phone_to_word = PhoneToWord.new(max_word_sets: 2, refresh_dictonary_json: true)
       puts
       puts "Possible Words:"
     time_in_sec = Benchmark.realtime { puts phone_to_word.to_words.inspect }
     puts "Time to execute: #{(time_in_sec.real * 1000).round(2)}ms"
-  rescue StandardError => e
-    puts "Input Error - #{e}"
-  end
+  # rescue StandardError => e
+  #   puts "Input Error - #{e}"
+  # end
 end
 
 run
