@@ -19,13 +19,13 @@ class PhoneToWord
     # instead loop one and write to file(yml) and read it next time
     # symbols are faster than loops
     # every time dictonary is updated the file can be refershed with :refresh_dictonary_hash attribute
-    if File.file?('dictonary_hash.yml') || !options[:refresh_dictonary_hash]
-      puts 'Loading Dictonary...'
-      @word_hash = YAML.load(File.read("dictonary_hash.yml"))
-    else
+    if !!options[:refresh_dictonary_hash] || !File.file?('dictonary_hash.yml')
       puts 'Refreshing Dictonary...'
       @word_hash = Hash.new { |h, k| h[k] = Array.new }
-      init_word_hash!(@word_hash)
+      init_word_hash!(@word_hash, @max_phone_length)
+    else
+      puts 'Loading Dictonary...'
+      @word_hash = YAML.load(File.read("dictonary_hash.yml"))      
     end
 
     # loop until a valid phone is given
@@ -97,8 +97,9 @@ private
   # ideally standards way to do would be to either
   # - put the data to DB and index the column
   # - or use searching libraries like elasticsearch
-  def init_word_hash!(word_hash)
+  def init_word_hash!(word_hash, max_phone_length)
     File.read("dictionary.txt").split("\n").each do |word|
+      next if word.length > max_phone_length
       number = '' 
       word.split('').each do |letter|
         case letter.downcase
@@ -118,5 +119,11 @@ private
   end
 end
 
-phone_to_word = PhoneToWord.new
+
+# options
+# - max_word_sets: integer (default: nil)
+# - max_phone_length: integer (default: 10)
+# - min_word_length: integer (default: 3)
+# - refresh_dictonary_hash: boolean (default: false)
+phone_to_word = PhoneToWord.new(max_word_sets: 2)
 puts phone_to_word.to_words.inspect
