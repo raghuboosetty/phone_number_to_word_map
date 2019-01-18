@@ -28,3 +28,16 @@ You solution should contain one method that we can call with a 10 digit number. 
 You have 8 hours to complete this assignment in Ruby.
 
 Note:Please do not copy the code from online reference.
+
+UPDATED:
+
+As discussed with you in call, our tech team evaluated code and provided below feedback for improvement
+
+- Can you update code to show three words combination as well. 
+- Need to have more details in specs covering below points
+    - Showing benchmark of time taken for code execution
+    - Check test coverage with less than 10 digits are provided 
+    - Check if string is provided as input
+    - Validate output is giving result back in array
+    - When specs are executed it should show proper details in command prompt. Right now no details are showing up. 
+- Readme should also have details on benchmark and specs execution details
