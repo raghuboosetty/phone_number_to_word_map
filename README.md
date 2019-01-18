@@ -29,10 +29,24 @@ $ 6686787825
 
 ## Unit Tests
 
-A mini test suite is added under `phone_number_to_word_map/spec` dir. You can run the test suite from `phone_number_to_word_map` dir by running
+A test suite is added under `phone_number_to_word_map/spec` dir. Test coverage is on each method of `PhoneNumberToWord` class. You can run the test suite from `phone_number_to_word_map` dir by running:
 ```
 $ bin/run_specs
+
+# alternatively you can also use `rspec` command to run the tests:
+$ rspec /spec
 ```
+
+## Benchmarks
+The problem statement asks to convert phone to words under 1000ms. I've taken the reverse appraoch of finding the words from given dictonary i.e format the given `txt` dictonary, then create a JSON hash at once and find the words in it with the keys. So the benchmarks in <b>realtime</b> are some what like this:
+<br><br>
+Converting the phone to word using the indexed dictonary: <b>50 - 200ms</b><br>
+For inexing the whole dictonary and converting phone to words: <b>1200 - 1900ms</b>
+<br><br>
+The variable range of execution mostly depends on the hardware you are using. My hardware is pretty old and I was getting the execution time around 100ms for converting phone to words. A better hard ware can get things done in almost 1000ms for both indexing and conversion!
+<br><br>
+When you run the program you'll see the benchmarks only in <b>realtime</b>
+
 
 ## Logic
 1. Parse the dictonary at once and write the data to a JSON file. Basically write once and read many. This helps in optimizing the performance of the application. It can also be done using DB with indexing and(or) searching libraries like elasticsearch as a next level of performance
@@ -46,7 +60,6 @@ $ bin/run_specs
 The output of program is slightly different form the output obtained but I believe solution is correct. Please update for any issues involved:
 1. Single words are wrapped in array in this program output but problem example output is showing as string
 2. Some combinations are missing in given example. E.g: ['motor', 'truck'], ["cat", "amounts"], it can be assumed that full word 'motortruck' and 'catamounts' are used instead. If we consider that case then, ["acta", "mounts"] and ["act", "amounts"] shouldn't exist as they both are same when combined. Similarly ["noun", "struck"] and ["nouns", "truck"] shouldn't be there
-3. The default set size if set of 3 then there will be more combinations.
 <br><br>
 
 Max. effort has been put to make the code dynamic also taking performance into account. So, most of the inputs given in problem are converted to params to new method. Thus extending the scope of the application.
@@ -63,4 +76,5 @@ e.g:
 * refresh_dictonary_json: boolean (default: false)<br>
   To refresh the JSON file whenever a dictonary is upated. This is one time operation. Setting the flag to true will update the JSON or if the file is missing then it will create a new one
 * phone_number: integer/string (default: 0)<br>
-  It can be given as an input param or can be given via console. When no input is given or when a wrong input is given the console will prompt for input.
+  It can be given as an input param or can be given via console. When no input is given the console will prompt for input again until some input is given. 
+  When an incorrect input is given(either more or less than 10 digit or with 1s and 0s), then it will raise an `InvalidPhoneError` exception

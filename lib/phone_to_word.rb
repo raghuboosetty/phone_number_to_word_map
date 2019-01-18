@@ -1,4 +1,5 @@
 require 'json'
+class InvalidPhoneError < StandardError; end
 class PhoneToWord
   def initialize(options={})
 
@@ -11,9 +12,8 @@ class PhoneToWord
     @max_phone_length = options[:max_phone_length] || 10
 
     # number sets the phone number needs to be broken into
-    # based on the example output given, the size should be 2
-    # however, the decription isn't talking about the size
-    @max_word_sets = options[:max_word_sets]
+    # based on the example output given, the default size is 2
+    @max_word_sets = options[:max_word_sets] || 2
 
     # file storage location defaults to '/docs'
     @dictonary_file = options[:dictionary_file] || 'docs/dictionary.txt'
@@ -53,10 +53,12 @@ class PhoneToWord
     # - @max_phone_length digit
     # - without 0s and 1s
     @phone_number = options[:phone_number].to_s
-    while !valid_phone?(@phone_number)
+    while @phone_number.empty?
       puts "Please enter a valid 10 digit phone number without binary numbers(0's and 1's):"
-      @phone_number = gets.chomp
+      @phone_number = STDIN.gets.chomp
     end
+
+    raise InvalidPhoneError if !valid_phone?(@phone_number)
   end
 
   # checks if given phone number is valid
